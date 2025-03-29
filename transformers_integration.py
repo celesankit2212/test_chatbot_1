@@ -58,7 +58,6 @@ import torch
 import onnxruntime as ort
 from huggingface_hub import login
 
-login("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")
 
 MODEL_NAME = "bigcode/starcoder"
 
