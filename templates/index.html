@@ -1,20 +1,48 @@
- 
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Test Automation Bot</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-    <h2>Enter Test Case Description</h2>
-    <form method="post">
-        <textarea name="test_description" rows="4" cols="50" placeholder="Describe your test case..."></textarea><br>
-        <button type="submit">Generate & Run Test</button>
-    </form>
-    <h3>Generated Script:</h3>
-    <pre>{{ script }}</pre>
-    <h3>Test Execution Result:</h3>
-    <pre>{{ test_result }}</pre>
+    <div class="container">
+        <h2>AI-Powered Test Automation Bot</h2>
+
+        <form method="post" onsubmit="showLoading()">
+            <textarea name="test_description" rows="4" placeholder="Describe your test case..." required></textarea><br>
+            <button type="submit">Generate & Run Test</button>
+        </form>
+
+        <div id="loading">Generating test script... Please wait.</div>
+
+        {% if script %}
+            <h3>Generated Script:</h3>
+            <pre>{{ script }}</pre>
+        {% endif %}
+
+        {% if test_result %}
+            <h3>Test Execution Result:</h3>
+            <pre>{{ test_result }}</pre>
+        {% endif %}
+
+        <h3>Test History:</h3>
+        {% for result, credits in history %}
+            <div class="history-entry">
+                <p><strong>Result:</strong></p>
+                <pre>{{ result }}</pre>
+                <p><strong>Credits Consumed:</strong> {{ credits }}</p>
+            </div>
+        {% else %}
+            <p>No test history found.</p>
+        {% endfor %}
+    </div>
+
+    <script>
+        function showLoading() {
+            document.getElementById("loading").style.display = "block";
+        }
+    </script>
 </body>
 </html>
