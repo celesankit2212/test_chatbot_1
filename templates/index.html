@@ -2,41 +2,62 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Test Automation Bot</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        #loading {
+            display: none;
+            font-size: 18px;
+            color: #007BFF;
+            margin-top: 20px;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
-        <h2>AI-Powered Test Automation Bot</h2>
+        <h2>Welcome, {{ username }} (Role: {{ role }})</h2>
+        <form method="POST">
+            <textarea name="test_description" rows="4" cols="50" placeholder="Describe your test case..." required></textarea><br>
 
-        <form method="post" onsubmit="showLoading()">
-            <textarea name="test_description" rows="4" placeholder="Describe your test case..." required></textarea><br>
-            <button type="submit">Generate & Run Test</button>
+            {% if role == 'user' %}
+                <label>
+                    <input type="checkbox" name="execute_test" value="yes"> Execute Test After Generation
+                </label><br>
+            {% endif %}
+
+            <button type="submit">Submit</button>
         </form>
 
-        <div id="loading">Generating test script... Please wait.</div>
+        <div id="loading">Processing... Please wait.</div>
 
         {% if script %}
-            <h3>Generated Script:</h3>
-            <pre>{{ script }}</pre>
+        <h3>Generated Script:</h3>
+        <pre>{{ script }}</pre>
         {% endif %}
 
         {% if test_result %}
-            <h3>Test Execution Result:</h3>
-            <pre>{{ test_result }}</pre>
+        <h3>Test Execution Result:</h3>
+        <pre>{{ test_result }}</pre>
         {% endif %}
 
-        <h3>Test History:</h3>
-        {% for result, credits in history %}
-            <div class="history-entry">
-                <p><strong>Result:</strong></p>
-                <pre>{{ result }}</pre>
-                <p><strong>Credits Consumed:</strong> {{ credits }}</p>
-            </div>
-        {% else %}
-            <p>No test history found.</p>
-        {% endfor %}
+        {% if role == 'admin' %}
+            <h3>Test History:</h3>
+            <ul>
+                {% for entry in history %}
+                    <li>
+                        <strong>User:</strong> {{ entry.username }}<br>
+                        <strong>Result:</strong> {{ entry.result }}<br>
+                        <strong>Credits Consumed:</strong> {{ entry.credits }}<br>
+                        <strong>Timestamp:</strong> {{ entry.timestamp }}
+                    </li>
+                    <hr>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        <form action="{{ url_for('logout') }}" method="post">
+            <button type="submit">Logout</button>
+        </form>
     </div>
 
     <script>

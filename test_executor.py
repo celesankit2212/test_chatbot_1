@@ -1,9 +1,9 @@
- 
-import subprocess
+
+import pytest
 
 def run_test():
     try:
-        result = subprocess.run(["pytest", "tests/generated_test.py", "--tb=short", "-q"], capture_output=True, text=True)
-        return result.stdout
+        result = pytest.main(["tests/test_generated.py", "-q", "--tb=short"])
+        return "Test Passed" if result == 0 else "Test Failed"
     except Exception as e:
-        return str(e)
+        return f"Error during test run: {str(e)}"
