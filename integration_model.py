@@ -5,11 +5,8 @@ from openai import OpenAIError, OpenAI
 import re
 
 
-Open_AI_KEY = "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"
-
 # OPENAI_API_KEY
-# client = openai.OpenAI(api_key=os.environ.get("OPEN_AI_KEY"))
-client = openai.OpenAI(api_key=Open_AI_KEY)
+client = openai.OpenAI(api_key=os.environ.get("OPEN_AI_KEY"))
 executor = ThreadPoolExecutor(max_workers=2)  # Run API call in the background
 
 
