@@ -5,7 +5,6 @@ from openai import OpenAIError, OpenAI
 import re
 
 
-# OPENAI_API_KEY
 client = openai.OpenAI(api_key=os.environ.get("OPEN_AI_KEY"))
 executor = ThreadPoolExecutor(max_workers=2)  # Run API call in the background
 
